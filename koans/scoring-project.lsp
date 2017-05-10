@@ -50,8 +50,15 @@
 ; Your goal is to write the score method.
 
 (defun score (dice)
-  ; You need to write this method
-)
+  (let ((sum 0))
+    (dolist (num '(1 2 3 4 5 6))
+      (let ((quant (length (remove-if (lambda (iter) (not (= iter num))) dice))))
+	(when (>= quant 3)
+	  (incf sum (if (= num 1) 1000 (* num 100))))
+	(case num
+	  (1 (incf sum (* 100 (mod quant 3))))
+	  (5 (incf sum (* 50 (mod quant 3)))))))
+    sum))
 
 (define-test test-score-of-an-empty-list-is-zero
     (assert-equal 0 (score nil)))
